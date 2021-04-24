@@ -6,7 +6,9 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import { api } from '../../services/api';
 import { convertDurationTimeString } from '../../utils/convertDurationTimeString';
+import { usePlayer } from '../../contexts/PlayerContext';
 import styles from './episode.module.scss';
+import Head from 'next/head';
 interface Episode{
     id:string;
     title:string;
@@ -25,9 +27,13 @@ interface EpisodeProps{
     episode: Episode;
 }
 export default function Episode({episode}:EpisodeProps){
-    const router = useRouter()
+    const { play } = usePlayer();
+    
     return(
         <div className={styles.episode}>
+            <Head>
+                <title> {episode.title} | FalaTu</title>
+            </Head>
             <div className={styles.thumbnailContainer}>
                 <Link href="/">
                     <button type="button" >
@@ -40,7 +46,7 @@ export default function Episode({episode}:EpisodeProps){
                     src={episode.thumbnail} 
                     objectFit='cover'
                 />
-                <button type='button'>
+                <button type='button' onClick={()=>{play(episode)}}>
                     <img src="/play.svg" alt="Tocar episódio"/>
                 </button>
             </div>
@@ -57,8 +63,23 @@ export default function Episode({episode}:EpisodeProps){
 }
 
 export const getStaticPaths: GetStaticPaths = async()=>{
+    const { data } = await api.get("episodes",{
+        params:{
+          _limit:2,
+          _order:"desc",
+          _sort:"published_at"
+        }
+      });
+    
+      const paths = data.map((episode)=>{
+        return{
+            params:{
+                slug :episode.id
+            }
+        }
+      })
     return{
-        paths:[],
+        paths,
         fallback:'blocking'
     }
 }
