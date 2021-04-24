@@ -40,6 +40,7 @@ export function PlayerContextProvider({children}:PlayerContextProviderProps){
     const [isPlaying, setIsPlaying] = useState(false)
     const [isLooping, setIsLooping] = useState(false)
     const [isShuffling, setIsShuffling] = useState(false)
+
     function play(episode:Episode){
       setEpisodeList([episode])
       setCurrentEpisodeIndex(0);

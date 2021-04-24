@@ -8,8 +8,6 @@ export function Header(){
         locale:ptBr,
     });
 
-
-
     return(
         <header className={styles.headerContainer} >
             <img src="/logo.svg" alt="Podcast"/>
@@ -17,6 +15,10 @@ export function Header(){
             <p>O melhor para você ouvir sempre</p>
 
             <span>{currentDate}</span>
+
+            <button className={styles.menu}>
+                <img src="/menu.svg" alt="Botao menu"/>
+            </button>
         </header>
     )
 }

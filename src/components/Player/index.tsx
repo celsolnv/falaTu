@@ -58,7 +58,7 @@ export function Player() {
         else{
             clearPlayState();
         }
-    }
+    } 
     return (
         <div className={styles.playerContainer}>
             <Head>
